@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1032050248380",
+    "firebase_url": "https://mail-box-53f58.firebaseio.com",
+    "project_id": "mail-box-53f58",
+    "storage_bucket": "mail-box-53f58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032050248380:android:f7462157a06349be",
+        "android_client_info": {
+          "package_name": "com.mailbox.ricardoneves.caixacorreio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032050248380-b91mb5j6f84dhb34gj05fpgrpg0pn5od.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtH0jm2nZdhDyYjTGJIhfkpSq5ChOrJK0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
