@@ -147,6 +147,4 @@ public class MainActivity extends AppCompatActivity {
         // Make the call for the HTTP request
         queue.add(jsonObjectRequest);
     }
-
-
 }
