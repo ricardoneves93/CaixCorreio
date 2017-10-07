@@ -1,5 +1,6 @@
 package com.mailbox.ricardoneves.caixacorreio;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -90,68 +91,21 @@ public class MainActivity extends AppCompatActivity {
             if(!TextUtils.isEmpty(messageBody)) {
                 switch (messageBody) {
                     case NEW_MAIL_MSG:
-                        newMail();
+                        ScreenResponses.newEmail(MainActivity.this, true);
                         break;
                     case OPEN_DOOR_MSG:
-                        openDoor();
+                        ScreenResponses.openDoor(MainActivity.this);
                         break;
                     case CLOSE_DOOR_MSG:
-                        closeDoor();
+                        ScreenResponses.closeDoor(MainActivity.this);
                         break;
                     case RESET_MSG:
-                        resetMail();
+                        ScreenResponses.resetMail(MainActivity.this);
                         break;
                 }
             }
         }
     };
-
-    private void newMail() {
-        LinearLayout mail_status_layout = (LinearLayout) findViewById(R.id.mail_status_layout);
-        ImageView mail_status_img = (ImageView) findViewById(R.id.mail_status_img);
-
-        mail_status_layout.setBackgroundColor(Color.parseColor(GREEN_COLOR));
-        mail_status_img.setImageResource(R.drawable.open_email);
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.door_bell);
-        mp.start();
-    }
-
-    private void openDoor() {
-        LinearLayout door_status_layout = (LinearLayout) findViewById(R.id.door_status_layout);
-        ImageView door_status_img = (ImageView) findViewById(R.id.door_status_img);
-
-        door_status_layout.setBackgroundColor(Color.parseColor(RED_COLOR));
-        door_status_img.setImageResource(R.drawable.open_door);
-    }
-
-    private void closeDoor() {
-        LinearLayout door_status_layout = (LinearLayout) findViewById(R.id.door_status_layout);
-        ImageView door_status_img = (ImageView) findViewById(R.id.door_status_img);
-
-        door_status_layout.setBackgroundColor(Color.parseColor(GREEN_COLOR));
-        door_status_img.setImageResource(R.drawable.close_door);
-    }
-
-    private void resetMail() {
-        LinearLayout mail_status_layout = (LinearLayout) findViewById(R.id.mail_status_layout);
-        ImageView mail_status_img = (ImageView) findViewById(R.id.mail_status_img);
-
-        mail_status_layout.setBackgroundColor(Color.parseColor(RED_COLOR));
-        mail_status_img.setImageResource(R.drawable.close_email);
-    }
-
-    private void showAppDialog(String title, String message) {
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
 
 
     private void getState(final Context context) {
@@ -170,12 +124,13 @@ public class MainActivity extends AppCompatActivity {
                             String mailState = response.get("mail").toString();
 
                             if("opened".equals(doorState))
-                                openDoor();
+                                ScreenResponses.openDoor(MainActivity.this);
                             if("has_mail".equals(mailState))
-                                newMail();
+                                ScreenResponses.newEmail(MainActivity.this, false);
 
 
                         } catch (JSONException e) {
+                            ScreenResponses.showAppDialog("Erro", "Não foi possível processar resposta", MainActivity.this);
                         }
                     }
         },
@@ -183,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("response", error.toString());
-                        showAppDialog("Erro", "Não foi possível ir buscar o estado");
+                        ScreenResponses.showAppDialog("Erro", "Não foi possível ir buscar o estado", MainActivity.this);
                     }
                 }
         ){
