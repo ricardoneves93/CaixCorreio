@@ -29,6 +29,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String OPEN_DOOR_MSG = "open_door";
     private static final String CLOSE_DOOR_MSG = "close_door";
     private static final String RESET_MSG = "reset_mail";
-
-    private static final String RED_COLOR = "#FF0000";
-    private static final String GREEN_COLOR = "#00FF00";
 
     private static final String URL_STRING = "http://ricardoneves.noip.me:8090/current_state";
     private static final String USERNAME = "admin";
@@ -49,6 +49,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getState(getApplicationContext());
+
+        Weather.setWeather(MainActivity.this);
+
+        // Get the weather every 60 minutes
+        ScheduledExecutorService scheduler =
+                Executors.newSingleThreadScheduledExecutor();
+
+        scheduler.scheduleAtFixedRate
+                (new Runnable() {
+                    public void run() {
+                        Weather.setWeather(MainActivity.this);
+                    }
+                }, 0, 60, TimeUnit.MINUTES);
 
         // Register receiver to receive Notifications from firebaseMessagingService
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter("mail_data"));
