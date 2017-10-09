@@ -34,6 +34,8 @@ public class Weather {
 
     public static void setWeather(final Activity activity) {
 
+        Log.d("ceninhas", "update weather");
+
         RequestQueue queue = Volley.newRequestQueue(activity.getApplicationContext());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, API_URL, null,

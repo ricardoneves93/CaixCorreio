@@ -72,30 +72,40 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Get the weather every 60 minutes
-        ScheduledExecutorService schedulerWeather =
-                Executors.newSingleThreadScheduledExecutor();
-
+        ScheduledExecutorService schedulerTime =
+                Executors.newScheduledThreadPool(1);
 
         // Get the weather every 60 minutes
-        ScheduledExecutorService schedulerTime =
-                Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService schedulerWeather =
+                Executors.newScheduledThreadPool(1);
 
 
-        schedulerWeather.scheduleAtFixedRate
-                (new Runnable() {
-                    public void run() {
-                        Weather.setWeather(MainActivity.this);
-                    }
-                }, 0, 60, TimeUnit.MINUTES);
-
-
-
+        // Must have a "runOnUiThread" since every operation with UI must be handled by UI Thread
         schedulerTime.scheduleAtFixedRate
                 (new Runnable() {
+                    @Override
                     public void run() {
-                        updateTime(MainActivity.this);
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                updateTime(MainActivity.this);
+                            }
+                        });
                     }
                 }, 0, 1, TimeUnit.SECONDS);
+
+
+        // Must have a "runOnUiThread" since every operation with UI must be handled by UI Thread
+        schedulerWeather.scheduleAtFixedRate
+                (new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Weather.setWeather(MainActivity.this);
+                            }
+                        });
+                    }
+                }, 0, 60, TimeUnit.MINUTES);
     }
 
     @Override
@@ -187,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTime(final Activity activity) {
+        Log.d("ceninhas", "update clock");
         TextView clockView = (TextView) activity.findViewById(R.id.clock_text_time);
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
