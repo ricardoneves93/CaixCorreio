@@ -1,5 +1,6 @@
 package com.mailbox.ricardoneves.caixacorreio;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -27,11 +29,16 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,19 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         getState(getApplicationContext());
 
-        Weather.setWeather(MainActivity.this);
-
-        // Get the weather every 60 minutes
-        ScheduledExecutorService scheduler =
-                Executors.newSingleThreadScheduledExecutor();
-
-        scheduler.scheduleAtFixedRate
-                (new Runnable() {
-                    public void run() {
-                        Weather.setWeather(MainActivity.this);
-                    }
-                }, 0, 60, TimeUnit.MINUTES);
-
         // Register receiver to receive Notifications from firebaseMessagingService
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter("mail_data"));
 
@@ -76,6 +70,37 @@ public class MainActivity extends AppCompatActivity {
         // Hide the Status Bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // Get the weather every 60 minutes
+        ScheduledExecutorService schedulerWeather =
+                Executors.newSingleThreadScheduledExecutor();
+
+
+        // Get the weather every 60 minutes
+        ScheduledExecutorService schedulerTime =
+                Executors.newSingleThreadScheduledExecutor();
+
+
+        schedulerWeather.scheduleAtFixedRate
+                (new Runnable() {
+                    public void run() {
+                        Weather.setWeather(MainActivity.this);
+                    }
+                }, 0, 60, TimeUnit.MINUTES);
+
+
+
+        schedulerTime.scheduleAtFixedRate
+                (new Runnable() {
+                    public void run() {
+                        updateTime(MainActivity.this);
+                    }
+                }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -159,5 +184,13 @@ public class MainActivity extends AppCompatActivity {
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy());
         // Make the call for the HTTP request
         queue.add(jsonObjectRequest);
+    }
+
+    private void updateTime(final Activity activity) {
+        TextView clockView = (TextView) activity.findViewById(R.id.clock_text_time);
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date();
+        String currentTime = dateFormat.format(date);
+        clockView.setText(currentTime);
     }
 }

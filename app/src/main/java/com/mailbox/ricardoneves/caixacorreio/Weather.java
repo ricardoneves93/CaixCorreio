@@ -28,7 +28,7 @@ import java.util.Date;
 
 public class Weather {
 
-    private static String API_URL = "http://api.apixu.com/v1/forecast.json?key=9142c24cb9d94061869225804170710&q=alvarelhos&lang=pt&days=4";
+    private static String API_URL = "http://api.apixu.com/v1/forecast.json?key=9142c24cb9d94061869225804170710&q=Maia&lang=pt&days=4";
 
     private Weather() {}
 
