@@ -73,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the weather every 60 minutes
         ScheduledExecutorService schedulerTime =
-                Executors.newScheduledThreadPool(1);
+                Executors.newSingleThreadScheduledExecutor();
 
         // Get the weather every 60 minutes
         ScheduledExecutorService schedulerWeather =
-                Executors.newScheduledThreadPool(1);
+                Executors.newSingleThreadScheduledExecutor();
 
 
         // Must have a "runOnUiThread" since every operation with UI must be handled by UI Thread
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                updateTime(MainActivity.this);
+                                Time.updateTime(MainActivity.this);
                             }
                         });
                     }
@@ -194,14 +194,5 @@ public class MainActivity extends AppCompatActivity {
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy());
         // Make the call for the HTTP request
         queue.add(jsonObjectRequest);
-    }
-
-    private void updateTime(final Activity activity) {
-        Log.d("ceninhas", "update clock");
-        TextView clockView = (TextView) activity.findViewById(R.id.clock_text_time);
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        Date date = new Date();
-        String currentTime = dateFormat.format(date);
-        clockView.setText(currentTime);
     }
 }

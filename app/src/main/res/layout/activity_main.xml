@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="9 de Outubro de 2017"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="50dp" />
 
