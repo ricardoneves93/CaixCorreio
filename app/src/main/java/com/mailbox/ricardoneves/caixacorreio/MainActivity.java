@@ -1,6 +1,5 @@
 package com.mailbox.ricardoneves.caixacorreio;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -29,9 +27,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -136,12 +131,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case OPEN_DOOR_MSG:
                         ScreenResponses.openDoor(MainActivity.this);
+                        ScreenResponses.resetMail(MainActivity.this);
                         break;
                     case CLOSE_DOOR_MSG:
                         ScreenResponses.closeDoor(MainActivity.this);
-                        break;
-                    case RESET_MSG:
-                        ScreenResponses.resetMail(MainActivity.this);
                         break;
                 }
             }
