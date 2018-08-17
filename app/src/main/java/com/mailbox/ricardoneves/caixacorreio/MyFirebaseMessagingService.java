@@ -25,10 +25,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        Intent intent = new Intent("mail_data");
-        intent.putExtra("body", remoteMessage.getNotification().getBody());
-        intent.putExtra("title", remoteMessage.getNotification().getTitle());
-        broadcaster.sendBroadcast(intent);
+//        Intent intent = new Intent("mail_data");
+//        intent.putExtra("body", remoteMessage.getNotification().getBody());
+//        intent.putExtra("title", remoteMessage.getNotification().getTitle());
+//        broadcaster.sendBroadcast(intent);
     }
 
 
